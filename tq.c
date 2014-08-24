@@ -1,8 +1,33 @@
+/**
+
+    　　　　　　　　┏┓　　　┏┓
+    　　　　　　　┏┛┻━━━┛┻┓
+    　　　　　　　┃　　　　　　　┃ 　
+    　　　　　　　┃　　　━　　　┃
+    　　　　　　　┃　＞　　　＜　┃
+    　　　　　　　┃　　　　　　　┃
+    　　　　　　　┃...　⌒　...　┃
+    　　　　　　　┃　　　　　　　┃
+    　　　　　　　┗━┓　　　┏━┛
+    　　　　　　　　　┃　　　┃　Code is far away from bug with the animal protecting　　　　　　　　　　
+    　　　　　　　　　┃　　　┃ 神兽保佑,代码无bug
+    　　　　　　　　　┃　　　┃　　　　　　　　　　　
+    　　　　　　　　　┃　　　┃ 　　　　　　
+    　　　　　　　　　┃　　　┃
+    　　　　　　　　　┃　　　┃　　　　　　　　　　　
+    　　　　　　　　　┃　　　┗━━━┓
+    　　　　　　　　　┃　　　　　　　┣┓
+    　　　　　　　　　┃　　　　　　　┏┛
+    　　　　　　　　　┗┓┓┏━┳┓┏┛
+    　　　　　　　　　　┃┫┫　┃┫┫
+    　　　　　　　　　　┗┻┛　┗┻┛ */
+
+
 #include <stdio.h>
 #include <string.h>
 
 struct heap {
-	int array[32];
+	int array[128];
 	int size;
 	int max;
 };
@@ -86,10 +111,17 @@ int heap_delete(heap_t *h)
 ///////////////////////////////
 
 int test_data[] = {
-	11, 10, 9, 6, 7, 8, 10, 64, 
-	45, 46, 47, 48, 1, 2, 3, 4, 
-	25, 24, 23, 22, 100, 101, 102, 10, 
-	103, 104, 105, 106, 13, 14, 15, 16};
+	11, 10, 9, 6, 7, 8, 
+	10, 
+	64, 
+	45, 46, 47, 48, 
+	1, 2, 3, 4, 
+	25, 24, 23, 22, 
+	100, 101, 102, 
+	10, 
+	15, 15, 15, 
+	16, 
+	13, 14, 15, 16};
    
 
 
@@ -99,12 +131,13 @@ int main()
 
 	heap_t *h = heap_create(32);
 
-	for(i=0;i<31;i++) {
+	for(i=0;i<32;i++) {
 		heap_insert(h, test_data[i]);
 	}
 
+	i=0;
 	while(!heap_empty(h)) {
-		printf("%d\n", heap_delete(h));
+		printf("%d ->\t %d\n", i++, heap_delete(h));
 	}
 
 }
