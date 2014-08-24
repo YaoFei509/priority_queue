@@ -1,3 +1,37 @@
+--
+--                       _oo0oo_
+--                      o8888888o
+--                      88" . "88
+--                      (| -_- |)
+--                      0\  =  /0
+--                    ___/`---'\___
+--                  .' \\|     |-- '.
+--                 / \\|||  :  |||-- \
+--                / _||||| -:- |||||- \
+--               |   | \\\  -  --/ |   |
+--               | \_|  ''\---/''  |_/ |
+--               \  .-\__  '-'  ___/-. /
+--             ___'. .'  /--.--\  `. .'___
+--          ."" '<  `.___\_<|>_/___.' >' "".
+--         | | :  `- \`.;`\ _ /`;.`/ - ` : | |
+--         \  \ `_.   \_ __\ /__ _/   .-` /  /
+--     =====`-.____`.___ \_____/___.-`___.-'=====
+--                       `=---='
+--
+--
+--     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+--
+--               佛祖保佑         永无BUG
+--
+--
+--
+
+------------------------------------------------------
+-- 
+--  优先队列测试程序
+--
+--  姚飞
+------------------------------------------------------
 with Text_IO; use Text_IO;
 
 with Priority_Queue; 
@@ -5,22 +39,26 @@ with Interfaces; use Interfaces;
 
 procedure Cmdq_Test is 
    
+   -- 用户对象
    type MyObject is 
       record 
 	 ID: Integer;
 	 Val1, Val2, Val3, Val4: Integer;
       end record;
    
+   -- 0元
    function Nul return MyObject is 
    begin
       return (others=>0);
    end;
    
+   -- 重载 大于等于 运算符 
    function GE(P, Q : in MyObject) return Boolean is 
    begin
       return (P.ID >= Q.ID);
    end GE;
    
+   -- 队列实例化
    package Cmd_Queue is new Priority_Queue(Obj=>MyObject, 
 				     ">=" => GE,  
 				     Nul => Nul);
@@ -47,7 +85,6 @@ procedure Cmdq_Test is
    I : Integer;
 
 begin
-   
    TmpObj := Nul;
    
    for I in Test_Data'Range loop 
@@ -63,7 +100,4 @@ begin
       Put(Integer'Image(Get_Cmd.ID)); New_Line;
       I := I + 1;
    end loop;
-	
 end;
-   
-   
