@@ -1,3 +1,31 @@
+-----------------------------------------------------------
+--                       _oo0oo_
+--                      o8888888o
+--                      88" . "88
+--                      (| -_- |)
+--                      0\  =  /0
+--                    ___/`---'\___
+--                  .' \\|     |-- '.
+--                 / \\|||  :  |||-- \
+--                / _||||| -:- |||||- \
+--               |   | \\\  -  --/ |   |
+--               | \_|  ''\---/''  |_/ |
+--               \  .-\__  '-'  ___/-. /
+--             ___'. .'  /--.--\  `. .'___
+--          ."" '<  `.___\_<|>_/___.' >' "".
+--         | | :  `- \`.;`\ _ /`;.`/ - ` : | |
+--         \  \ `_.   \_ __\ /__ _/   .-` /  /
+--     =====`-.____`.___ \_____/___.-`___.-'=====
+--                       `=---='
+--
+--
+--     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+--
+--               佛祖保佑         永无BUG
+--
+--
+----------------------------------------------------------
+
 --------------------------------------------------
 --  定义优先队列类属
 --  
@@ -15,23 +43,28 @@ generic
 package Priority_Queue is
    
    MAXCMDNUM    : constant := 512;
-   type Queueptr is range 0..MAXCMDNUM;
+   type Queueptr is range 0..MAXCMDNUM-1;
    
-   -- Init an empty queue
+   -- 初始化空队列
    procedure Flush;
    
    -- 插入一个元素
    procedure Insert(Cmd_Data : in Obj);
    
    -- 查看队列头
-   function  Look_Cmd   return Obj;
+   function  Top     return Obj;
    
    -- 取出队列头
-   function  Get_Cmd    return Obj;
+   function  Get     return Obj;
    
-   function  Depth      return Integer;
-   function  IsEmpty    return Boolean ;
-   function  IsFull     return Boolean;
+   -- 深度
+   function  Depth   return Integer;
+   
+   -- 判队列空
+   function  IsEmpty return Boolean ;
+   
+   -- 判队列满
+   function  IsFull  return Boolean;
 
 end Priority_Queue;
 
@@ -85,7 +118,7 @@ package body Priority_Queue is
    end;
    
    -- 插入一个新对象，上滤操作
-   procedure  Insert(Cmd_Data : in Obj) is
+   procedure Insert(Cmd_Data : in Obj) is
       Parent, Child : QueuePtr;      
    begin
       if not IsFull then 
@@ -93,17 +126,18 @@ package body Priority_Queue is
 	 Child := QSize;
 	 QSize := QSize+1;
 	 
-	 while ( Child > 0) loop 
-	    Parent := (Child-1) /2;
-	    if (Cmd_Data >= Queue(Parent)) then
-	       Queue(Child) := Cmd_Data;
-	       Child := 0;  -- end of loop
-	    else
-	       Queue(Child) := Queue(Parent);
-	       Child := Parent;
-	    end if;
+	 loop 
+	    Parent := (Child-1)/2;
+	    exit when (Child = 0) or (Cmd_Data >= Queue(Parent));
+	    -- else :
+	    Queue(Child) := Queue(Parent);
+	    Child := Parent;
 	 end loop;
+	 Queue(Child) := Cmd_Data;
+	 
 	 Queue_Mux.Release;
+      else
+	 null; -- raise Constraint_Error;
       end if;
    end Insert;
    
@@ -153,8 +187,8 @@ package body Priority_Queue is
       Qsize := Qsize -1 ;
       Last  := Queue(QSize);
       
-      Hole := 0;
-      Child := 	1;
+      Hole  := 0;
+      Child := 1;
       while (Child < QSize) loop 
 
 	 if (Child /= QSize-1) and (not (Queue(Child+1) >= Queue(Child))) then 
@@ -175,16 +209,16 @@ package body Priority_Queue is
       Queue_Mux.Release;
    end;
    
-   function Look_Cmd return Obj is
+   function Top return Obj is
    begin
       if IsEmpty then
 	 return Nul;
       else
 	 return Queue(0);
       end if;
-   end;
+   end Top;
    
-   function Get_Cmd return Obj is
+   function Get return Obj is
       Temp : Obj ;
    begin
       if IsEmpty then
@@ -195,7 +229,7 @@ package body Priority_Queue is
 	 Delete_Heap;
       end if;
       return Temp;
-   end ;
+   end Get;
    
    procedure Flush is
    begin
