@@ -25,6 +25,7 @@
 
 #include <stdio.h>
 #include <string.h>
+#include <malloc.h>
 
 struct heap {
 	int array[128];
