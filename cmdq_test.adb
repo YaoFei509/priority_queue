@@ -95,9 +95,9 @@ begin
    I:=0;
    while (not IsEmpty) loop
       Put(Integer'Image(I));
-      Put("->");
+      Put(" ->");
       Put(ASCII.HT);
-      Put(Integer'Image(Get_Cmd.ID)); New_Line;
+      Put(Integer'Image(Get.ID)); New_Line;
       I := I + 1;
    end loop;
 end;
