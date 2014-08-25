@@ -78,7 +78,7 @@ procedure Cmdq_Test is
    -------------
    TmpObj: MyObject;
    
-   Test_Data : array(0..31) of Integer := 
+   Test_Data : array(0..511) of Integer := 
      (11, 10, 9, 6, 7, 8,        -- reverse
       10,                        -- repeat
       64,                        -- far bigger 
@@ -89,10 +89,16 @@ procedure Cmdq_Test is
       10,                        -- 3rd repeat 
       15, 15, 15,                -- continue repeat 
       16,                        -- forward
-      13, 14, 15, 16);           -- back and forward, 4th repeat
+      13, 14, 15, 16,            -- back and forward, 4th repeat
+      others=>0);
    I : Integer;
 
 begin
+   
+   for I in 32..Test_Data'Last loop 
+      Test_Data(I) := (Test_Data(I-1) + 501) mod 511; 
+   end loop;
+   
    TmpObj := Nul;
    
    for I in Test_Data'Range loop 
