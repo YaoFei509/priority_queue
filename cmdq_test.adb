@@ -34,7 +34,8 @@
 ------------------------------------------------------
 with Text_IO; use Text_IO;
 
-with Priority_Queue; 
+with Priority_Queue;  -- 堆实现
+with PriQue;          -- 线性表实现
 with Interfaces; use Interfaces;
 
 procedure Cmdq_Test is 
@@ -59,11 +60,18 @@ procedure Cmdq_Test is
    end GE;
    
    -- 队列实例化
+   -- 堆实现
    package Cmd_Queue is new Priority_Queue(Obj=>MyObject, 
 				     ">=" => GE,  
 				     Nul => Nul);
    use Cmd_Queue;
    
+   --
+   -- 线性表实现
+   package Cmd_Queue_List is new PriQue(Obj=>MyObject, 
+					">=" => GE,  
+					Nul => Nul);
+   use Cmd_Queue_List;
    
    -------------
    -- Test Cases
@@ -89,15 +97,22 @@ begin
    
    for I in Test_Data'Range loop 
       TmpObj.ID := Test_Data(I);
-      Insert(TmpObj);
+      Cmd_Queue.Insert(TmpObj);
+      Cmd_Queue_List.Insert(TmpObj);
    end loop;
    
+   
+   Put("No.     Heap    List"); New_Line;
+   Put("------------------------"); New_Line;
    I:=0;
-   while (not IsEmpty) loop
+   while (not (Cmd_Queue.IsEmpty and Cmd_Queue_List.IsEmpty)) loop
       Put(Integer'Image(I));
       Put(" ->");
       Put(ASCII.HT);
-      Put(Integer'Image(Get.ID)); New_Line;
+      Put(Integer'Image(Cmd_Queue.Get.ID)); 
+      Put(ASCII.HT);
+      Put(Integer'Image(Cmd_Queue_List.Get.ID));
+      New_Line;
       I := I + 1;
    end loop;
 end;
