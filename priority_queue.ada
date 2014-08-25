@@ -141,42 +141,6 @@ package body Priority_Queue is
       end if;
    end Insert;
    
-   
-   -- 下滤操作, 委护堆结构
-   procedure Remove_Heap is
-      Parent, Child : QueuePtr;
-      Tmp : Obj;
-   begin
-      Queue_Mux.Lock;
-      QSize := QSize -1 ;
-
-      if (QSize > 0)  then
-	 Queue(0) := Queue(QSize);
-	 Parent := 0;
-	 Child := 1;
-
-	 while( Child < QSize) loop 
-	    if Queue(Child) >= Queue(Child + 1) then 
-	       Child := Child + 1;
-	    end if;
-
-	    if Queue(Parent) >= Queue(Child) then
-	       -- swap parent and child
-	       Tmp := Queue(Parent);
-	       Queue(Parent) := Queue(Child);
-	       Queue(Child) := Tmp;
-	       
-	       Parent := Child;
-	       Child := 2*Child +1;
-	    else
-	       Child := QSize; -- end of loop
-	    end if;
-	 end loop;
-      end if;
-      Queue_Mux.Release;
-   end Remove_Heap;
-   
-   
    -- 下滤操作 another version
    procedure Delete_Heap is 
       Hole, Child : QueuePtr;
@@ -198,7 +162,14 @@ package body Priority_Queue is
 	 if (Last >= Queue(Child)) then
 	    Queue(Hole) := Queue(Child);
 	    Hole := Child;
-	    Child := Hole*2+1; -- left leaf   
+	    
+	    -- for Ada runtime check
+	    -- 规避 Ada 运行时检查
+	    if (Hole < QueuePtr'Last/2) then  
+	       Child := Hole*2+1; -- left leaf   
+	    else 
+	       Child := Qsize;
+	    end if;
 	 else
 	    Child := QSize;
 	 end if;
@@ -207,7 +178,7 @@ package body Priority_Queue is
       Queue(Hole) := Last;
       
       Queue_Mux.Release;
-   end;
+   end Delete_Heap;
    
    function Top return Obj is
    begin
@@ -225,7 +196,6 @@ package body Priority_Queue is
 	 Temp := Nul; 
       else 
 	 Temp := Queue(0);
-	 --Remove_Heap; 
 	 Delete_Heap;
       end if;
       return Temp;
