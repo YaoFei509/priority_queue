@@ -107,7 +107,7 @@ package body Cmdq_Test_ERC32 is
       I, A, B  : Integer;
       Test_Len : Integer;
       Start    : Time;
-      Time1, Time2 : Time_Span;
+      Time1, Time2, Time3 : Time_Span;
    begin
       
       Test_Len := 32;
@@ -117,8 +117,8 @@ package body Cmdq_Test_ERC32 is
 	 Test_Data(I) := (Test_Data(I-1) + 257) mod 511; 
       end loop;
       
-      Put_Line("Test length  Period Heap         List          Speed"); 
-      Put_Line("----------------------------------------------------");
+      Put_Line("Test length  Period Heap        Delete          List          Speed"); 
+      Put_Line("-------------------------------------------------------------------");
 
       loop 
 	 TmpObj := Nul;
@@ -140,6 +140,7 @@ package body Cmdq_Test_ERC32 is
 	 Time2 := Clock - Start;
 	 
 	 -- 抽取队列比对结果，如果有差异则报错
+	 Start := Clock;
 	 I:=0;
 	 while (not (Cmd_Queue_List.IsEmpty and Cmd_Queue.IsEmpty)) loop
 	    A := Cmd_Queue.Get.ID;
@@ -160,6 +161,7 @@ package body Cmdq_Test_ERC32 is
 	    end if;
 	    I := I + 1;
 	 end loop;
+	 Time3 := Clock - Start;
 
 	 --
 	 -- 测量并打印每次任务运行时间 
@@ -167,9 +169,11 @@ package body Cmdq_Test_ERC32 is
 	 Put(Integer'Image(Test_Len)); 
 	       
 	 Put(ASCII.HT);	 Put(ASCII.HT);
-	 Put(Integer'Image(Time1 / Ada.Real_Time.Tick )); 
+	 Put(Integer'Image(Time1 / Ada.Real_Time.Tick / Test_Len )); 
 	 Put(ASCII.HT);	 Put(ASCII.HT);
-	 Put(Integer'Image(Time2 / Ada.Real_Time.Tick )); 
+	 Put(Integer'Image(Time3 / Ada.Real_Time.Tick / Test_Len )); 
+	 Put(ASCII.HT);	 Put(ASCII.HT);
+	 Put(Integer'Image(Time2 / Ada.Real_Time.Tick / Test_Len )); 
 	 Put(ASCII.HT);	 Put(ASCII.HT);	
 	 Put(Integer'Image(Time2/Time1));
 	 New_Line;
@@ -179,8 +183,8 @@ package body Cmdq_Test_ERC32 is
 	 if Test_Len > Test_Data'Last then 
 	    Test_Len :=32 ;
 	    New_Line; New_Line;
-	    Put_Line("Test length  Period Heap         List          Speed"); 
-	    Put_Line("----------------------------------------------------");
+      	    Put_Line("Test length  Period Heap        Delete          List          Speed"); 
+            Put_Line("-------------------------------------------------------------------");
 	 end if;
       end loop;
    end;
