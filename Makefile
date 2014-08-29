@@ -36,7 +36,7 @@ cmdq_erc32: 	$(SOURCES)
 
 # 模拟器运行
 run:	cmdq_erc32
-	$(RUN) $<
+	$(RUN) -bc $<
 
 # HEX文件
 ihex: $(TARGETS)
