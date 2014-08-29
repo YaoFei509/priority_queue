@@ -43,7 +43,6 @@ generic
 package Priority_Queue is
    
    MAXCMDNUM    : constant := 512;
-   type Queueptr is range 0..MAXCMDNUM-1;
    
    -- 初始化空队列
    procedure Flush;
@@ -74,10 +73,10 @@ package body Priority_Queue is
    --
    --  二叉树实现
    --
-   type QueueType is array(Queueptr) of Obj;
+   type QueueType is array(0..MAXCMDNUM-1) of Obj;
    
    Queue: QueueType;
-   QSize: Queueptr;
+   QSize: Integer; --Queueptr;
    
    -- 指令队列修改操作通过该保护对象加锁
    protected Queue_Mux is        
@@ -119,7 +118,7 @@ package body Priority_Queue is
    
    -- 插入一个新对象，上滤操作
    procedure Insert(Cmd_Data : in Obj) is
-      Parent, Child : QueuePtr;      
+      Parent, Child : Integer; --QueuePtr;      
    begin
       if not IsFull then 
 	 Queue_Mux.Lock;
@@ -143,7 +142,7 @@ package body Priority_Queue is
    
    -- 下滤操作 another version
    procedure Delete_Heap is 
-      Hole, Child : QueuePtr;
+      Hole, Child : Integer; --QueuePtr;
       Last : Obj;
    begin
       Queue_Mux.Lock;
@@ -162,14 +161,7 @@ package body Priority_Queue is
 	 if (Last >= Queue(Child)) then
 	    Queue(Hole) := Queue(Child);
 	    Hole := Child;
-	    
-	    -- for Ada runtime check
-	    -- 规避 Ada 运行时检查
-	    if (Hole < QueuePtr'Last/2) then  
-	       Child := Hole*2+1; -- left leaf   
-	    else 
-	       Child := Qsize;
-	    end if;
+	    Child := Hole*2+1; -- left leaf   
 	 else
 	    Child := QSize;
 	 end if;
