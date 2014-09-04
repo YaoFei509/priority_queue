@@ -18,7 +18,7 @@ OBJDUMP  = $(prefix)-objdump
 RUN      = $(prefix)-run
 
 CFLAGS   = -g -Isrc
-LDFLAGS  = -largs -T jb5c.M
+LDFLAGS  = -largs -T m1750.M
 
 TARGETS  = cmdq_erc32
 SOURCES  = cmdq_erc32.adb cmdq_test_erc32.o priority_queue.o  prique.o
@@ -30,7 +30,7 @@ cmdq_test: cmdq_test.adb priority_queue.o  prique.o
 	gnatmake -f -g -D obj -Isrc cmdq_test
 
 
-# ERC32 版本
+# ERC32 版本 also for 1750A
 cmdq_erc32: 	$(SOURCES)
 	$(GMAKE) -f $@ $(CFLAGS) $(LDFLAGS) 
 
@@ -65,6 +65,9 @@ tqpp.o: tqpp.cc
 clean:
 	-rm -rf *.ali *.o b~* *~ *.hex cmdq_test cmdq_erc32 tq tqpp obj/*
 
+log:
+	git pull
+	git log --format=short --graph > ChangeLog
 
 %.o: %.cc
 	$(CXX) -g -c $<
@@ -74,4 +77,5 @@ clean:
 
 %.ad[sb]: %.ada
 	test -d src || mkdir src
+	test -d obj || mkdir obj
 	gnatchop -r -w $< src

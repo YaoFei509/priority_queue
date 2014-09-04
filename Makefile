@@ -18,7 +18,7 @@ OBJDUMP  = $(prefix)-objdump
 RUN      = $(prefix)-run
 
 CFLAGS   = -g -Isrc
-LDFLAGS  = -largs -T gx12_ram.x
+LDFLAGS  = -largs -T erc32_ram.x
 
 TARGETS  = cmdq_erc32
 SOURCES  = cmdq_erc32.adb cmdq_test_erc32.o priority_queue.o  prique.o
@@ -65,6 +65,9 @@ tqpp.o: tqpp.cc
 clean:
 	-rm -rf *.ali *.o b~* *~ *.hex cmdq_test cmdq_erc32 tq tqpp obj/*
 
+log:
+	git pull
+	git log --format=short --graph > ChangeLog
 
 %.o: %.cc
 	$(CXX) -g -c $<
