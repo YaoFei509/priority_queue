@@ -1,7 +1,3 @@
-/*
- * $Id: jb5c.M,v 1.15 2007/01/10 05:19:10 obdh Exp $
- */
-
 OUTPUT_FORMAT("coff-m1750")
 OUTPUT_ARCH(m1750a)
 SEARCH_DIR(/opt/m1750-ada/m1750-coff/lib);
@@ -94,44 +90,7 @@ _PROM_START = 0x00000000;
  *             |                    | from _eistack.
  * 0x0001bffe  |        _eistack    |
  *             +--------------------+
- * 0x0001c000  | ACE shared memory  |
- *             |      BU 61585      |
- *             |     (4K Word )     | 
- * 0x0001dffe  |                    |
- *             +--------------------+
- * 0x0001e000  |Mass memory window 1|
- *             |   (1K Word)        |
- *             +--------------------+
- * 0x0001e800  |Mass memory window 2|
- *             |   (1K Word)        |
- * 0x0001effe  |                    |
- *             +--------------------+
- * 0x0001f000  |TM Data send buffer |
- *             |   ( 2K Word )      |
  * 0x0001fffe  +--------------------+
- *
- * Expanded memory sections:
- *
- *             +--------------------+
- * 0x00020000  |                    |
- *             |  64K words for     |
- *             |  .text sections    |
- *             |                    |
- *             +--------------------+
- *             +--------------------+
- * 0x00040000  |                    |
- *             |  64K words for     |
- *             |  .text sections    |
- *             |                    |
- *             +--------------------+
- *             +--------------------+
- * 0x00060000  |                    |
- *             |  64K words for     |
- *             |  .text sections    |
- *             |                    |
- *             +--------------------+
- *
- * ... more 64K blocks up to a total of 15 on the 1750A
  *
  */
 _RAM_END = _RAM_START + _RAM_SIZE;
@@ -153,12 +112,10 @@ SECTIONS
 {
   .init 0x00000000 : {
     *(.init)
-    . = 0x00000040;
-  } = 0x7400
+  }
 
   .ivec 0x00000040 : {
     *(.ivec)
-    . += 0x00000080; 
   }
 
   .text 0x00000100 : {
