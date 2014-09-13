@@ -77,4 +77,5 @@ log:
 
 %.ad[sb]: %.ada
 	test -d src || mkdir src
+	test -d obj || mkdir obj
 	gnatchop -r -w $< src
