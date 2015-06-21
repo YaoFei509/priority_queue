@@ -86,7 +86,7 @@ int heap_delete(heap_t *h)
 	int i, j;
 
 	if (heap_empty(h))
-		return;
+		return -1;   // in fact, should be -MAX
 
 
 	min=h->array[0];
