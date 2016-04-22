@@ -6,8 +6,8 @@
 #------------------------------------------------------
 
 VER=
-XGC=/opt/erc32-ada$(VER)/bin/
-prefix = $(XGC)erc-elf
+XGC=/opt/leon-ada$(VER)/bin/
+prefix = $(XGC)leon-elf
 
 CC       = $(prefix)-gcc
 LD    	 = $(prefix)-ld
@@ -18,9 +18,9 @@ OBJDUMP  = $(prefix)-objdump
 RUN      = $(prefix)-run
 
 CFLAGS   = -g -Isrc
-LDFLAGS  = -largs -T erc32_ram.x
+#LDFLAGS  = -largs -T erc32_ram.x
 
-TARGETS  = cmdq_erc32
+TARGETS  = cmdq_leon
 SOURCES  = cmdq_erc32.adb cmdq_test_erc32.o priority_queue.o  prique.o
 
 all: cmdq_test tq tqpp run
@@ -30,12 +30,12 @@ cmdq_test: cmdq_test.adb priority_queue.o  prique.o
 	gnatmake -f -g -D obj -Isrc cmdq_test
 
 
-# ERC32 版本
-cmdq_erc32: 	$(SOURCES)
-	$(GMAKE) -f $@ $(CFLAGS) $(LDFLAGS) 
+# LEON 版本
+cmdq_leon: 	$(SOURCES)
+	$(GMAKE) -f -o $@ cmdq_erc32 $(CFLAGS) $(LDFLAGS) 
 
 # 模拟器运行
-run:	cmdq_erc32
+run:	cmdq_leon
 	$(RUN) -bc $<
 
 # HEX文件
@@ -63,7 +63,7 @@ tq.o: tq.c
 tqpp.o: tqpp.cc
 
 clean:
-	-rm -rf *.ali *.o b~* *~ *.hex cmdq_test cmdq_erc32 tq tqpp obj/*
+	-rm -rf *.ali *.o b~* *~ *.hex cmdq_test cmdq_leon tq tqpp obj/*
 
 log:
 	git pull
