@@ -21,15 +21,15 @@
 --
 --     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 --
---               ·ğ×æ±£ÓÓ         ÓÀÎŞBUG
+--               ä½›ç¥–ä¿ä½‘         æ°¸æ— BUG
 --
 --
 ----------------------------------------------------------
 
 --------------------------------------------------
---  ¶¨ÒåÓÅÏÈ¶ÓÁĞÀàÊô
+--  å®šä¹‰ä¼˜å…ˆé˜Ÿåˆ—ç±»å±
 --  
---  Ê¹ÓÃ¶ş²æ¶ÑËã·¨
+--  ä½¿ç”¨äºŒå‰å †ç®—æ³•
 --
 --  Yao Fei
 --------------------------------------------------
@@ -44,25 +44,25 @@ package Priority_Queue is
    
    MAXCMDNUM    : constant := 512;
    
-   -- ³õÊ¼»¯¿Õ¶ÓÁĞ
+   -- åˆå§‹åŒ–ç©ºé˜Ÿåˆ—
    procedure Flush;
    
-   -- ²åÈëÒ»¸öÔªËØ
+   -- æ’å…¥ä¸€ä¸ªå…ƒç´ 
    procedure Insert(Cmd_Data : in Obj);
    
-   -- ²é¿´¶ÓÁĞÍ·
+   -- æŸ¥çœ‹é˜Ÿåˆ—å¤´
    function  Top     return Obj;
    
-   -- È¡³ö¶ÓÁĞÍ·
+   -- å–å‡ºé˜Ÿåˆ—å¤´
    function  Get     return Obj;
    
-   -- Éî¶È
+   -- æ·±åº¦
    function  Depth   return Integer;
    
-   -- ÅĞ¶ÓÁĞ¿Õ
+   -- åˆ¤é˜Ÿåˆ—ç©º
    function  IsEmpty return Boolean ;
    
-   -- ÅĞ¶ÓÁĞÂú
+   -- åˆ¤é˜Ÿåˆ—æ»¡
    function  IsFull  return Boolean;
 
 end Priority_Queue;
@@ -71,14 +71,14 @@ with System; use System;
 package body Priority_Queue is
    
    --
-   --  ¶ş²æÊ÷ÊµÏÖ
+   --  äºŒå‰æ ‘å®ç°
    --
    type QueueType is array(0..MAXCMDNUM-1) of Obj;
    
    Queue: QueueType;
    QSize: Integer; --Queueptr;
    
-   -- Ö¸Áî¶ÓÁĞĞŞ¸Ä²Ù×÷Í¨¹ı¸Ã±£»¤¶ÔÏó¼ÓËø
+   -- æŒ‡ä»¤é˜Ÿåˆ—ä¿®æ”¹æ“ä½œé€šè¿‡è¯¥ä¿æŠ¤å¯¹è±¡åŠ é”
    protected Queue_Mux is        
       entry Lock ;      
       procedure Release ;      
@@ -116,7 +116,7 @@ package body Priority_Queue is
       return Integer(QSize); 
    end;
    
-   -- ²åÈëÒ»¸öĞÂ¶ÔÏó£¬ÉÏÂË²Ù×÷
+   -- æ’å…¥ä¸€ä¸ªæ–°å¯¹è±¡ï¼Œä¸Šæ»¤æ“ä½œ
    procedure Insert(Cmd_Data : in Obj) is
       Parent, Child : Integer; --QueuePtr;      
    begin
@@ -140,7 +140,7 @@ package body Priority_Queue is
       end if;
    end Insert;
    
-   -- ÏÂÂË²Ù×÷ another version
+   -- ä¸‹æ»¤æ“ä½œ another version
    procedure Delete_Heap is 
       Hole, Child : Integer; --QueuePtr;
       Last : Obj;
