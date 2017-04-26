@@ -35,7 +35,6 @@ with Unchecked_Conversion;
 generic
    type Obj is private ;
    with function ">="(X,Y : in Obj) return Boolean;
---   with function "="(X,Y : in Obj) return Boolean;
    with function Nul return Obj; 
    
 package PriQue is
@@ -43,14 +42,14 @@ package PriQue is
    MAXCMDNUM    : constant := 512 ;
    type Queueptr is mod MAXCMDNUM;
    
-   procedure Insert(Cmd_Data : in Obj);
+   procedure Insert(Cmd_Data : in Obj); -- 插入新元素
    
-   function  Look    return Obj;
-   function  Get     return Obj;
-   function  Depth   return Integer;
-   function  IsEmpty return Boolean ;
-   function  IsFull  return Boolean;
-   procedure Flush;
+   function  Look    return Obj;        -- 读取队列头第一个元素
+   function  Get     return Obj;        -- 读取并取出第一个元素
+   function  Depth   return Integer;    -- 当前队列深度
+   function  IsEmpty return Boolean;    -- 测试队列空
+   function  IsFull  return Boolean;    -- 测试队列满
+   procedure Flush;                     -- 初始化清理队列
    
 end PriQue;
 
@@ -62,7 +61,7 @@ package body PriQue is
 
    Rptr, Wptr : Queueptr;
    
-   -- 指令队列修改操作通过该保护对象加锁
+   -- 队列修改操作通过该保护对象加锁
    protected Queue_Mux is        
       entry Lock ;      
       procedure Release ;      
