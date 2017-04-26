@@ -16,7 +16,7 @@ SEARCH_DIR("/opt/erc32-ada-1.8.4b3/erc-elf/lib");
  *   : erc32_ram.sc,v 1.1 2010-09-28 22:31:18 nettleto Exp $
  *
  **************************************************************************/
-STARTUP("../kernel/art0.o")
+STARTUP("art0.o")
 ENTRY(__warm_start)
 /*
  * Set _STACK_SIZE to the size in bytes of the main stack. The main stack is
