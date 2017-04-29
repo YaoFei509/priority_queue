@@ -111,7 +111,7 @@ using namespace std;
 typedef deque<int, allocator<int> > INTDQU;
 typedef priority_queue<int,INTDQU, greater<int> > INTPRQUE;
 
-const int NUM_OF_TEST = 32;
+const int NUM_OF_TEST = 512;
 int test_data[NUM_OF_TEST] = {
 	11, 10, 9, 6, 7, 8, 
 	10, 
@@ -132,6 +132,10 @@ int main(void)
 	int size_q;
 	INTPRQUE   q;
 
+	for (int i=32; i<NUM_OF_TEST; i++) {
+	  test_data[i] = ( i+501) % 512;
+	}
+	
 	// Insert items in the priority_queue(uses deque)
 	for (int i=0; i<NUM_OF_TEST; i++) {
 		q.push(test_data[i]);
