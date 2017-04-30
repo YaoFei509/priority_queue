@@ -132,10 +132,11 @@ int main(void)
 	int size_q;
 	INTPRQUE   q;
 
+        // 构造伪随机测试数据
 	for (int i=32; i<NUM_OF_TEST; i++) {
-	  test_data[i] = ( i+501) % 512;
+		test_data[i] = ( test_data[i-1] + 257) % 511;
 	}
-	
+      
 	// Insert items in the priority_queue(uses deque)
 	for (int i=0; i<NUM_OF_TEST; i++) {
 		q.push(test_data[i]);
