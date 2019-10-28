@@ -7,11 +7,11 @@
 
 VER=
 # For leon-ada
-#XGC=/opt/leon-ada$(VER)/bin/
+#XGC    = /opt/leon-ada$(VER)/bin/
 #prefix = $(XGC)leon-elf
 
 # for ERC32-Ada
-XGC=/opt/erc32-ada$(VER)/bin/
+XGC    = /opt/erc32-ada$(VER)/bin/
 prefix = $(XGC)erc-elf
 
 CC       = $(prefix)-gcc
@@ -22,8 +22,8 @@ OBJCOPY  = $(prefix)-objcopy
 OBJDUMP  = $(prefix)-objdump
 RUN      = $(prefix)-run
 
-HOSTCC   = gcc
-HOSTCXX  = g++
+HOSTCC   = clang      # or gcc 
+HOSTCXX  = clang++    # or g++
 
 CFLAGS   = -g -Isrc
 #LDFLAGS  = -largs -T erc32_ram.x
