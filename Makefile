@@ -6,8 +6,13 @@
 #------------------------------------------------------
 
 VER=
-XGC=/opt/leon-ada$(VER)/bin/
-prefix = $(XGC)leon-elf
+# For leon-ada
+#XGC=/opt/leon-ada$(VER)/bin/
+#prefix = $(XGC)leon-elf
+
+# for ERC32-Ada
+XGC=/opt/erc32-ada$(VER)/bin/
+prefix = $(XGC)erc-elf
 
 CC       = $(prefix)-gcc
 LD    	 = $(prefix)-ld
@@ -16,6 +21,9 @@ GNATCHOP = $(prefix)-gnatchop
 OBJCOPY  = $(prefix)-objcopy
 OBJDUMP  = $(prefix)-objdump
 RUN      = $(prefix)-run
+
+HOSTCC   = gcc
+HOSTCXX  = g++
 
 CFLAGS   = -g -Isrc
 #LDFLAGS  = -largs -T erc32_ram.x
@@ -44,11 +52,11 @@ ihex: $(TARGETS)
 
 # C版本
 tq: tq.o
-	gcc -g -o $@ $<
+	$(HOSTCC) -g -o $@ $<
 
 # C++ 版本
 tqpp: tqpp.o
-	$(CXX) -g -o $@ $<
+	$(HOSTCXX) -g -o $@ $<
 
 ##########################################################3
 
