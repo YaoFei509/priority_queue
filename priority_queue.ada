@@ -121,10 +121,11 @@ package body Priority_Queue is
       Parent, Child : Integer; --QueuePtr;      
    begin
       if not IsFull then 
-	 Queue_Mux.Lock;
+
 	 Child := QSize;
 	 QSize := QSize+1;
 	 
+	 Queue_Mux.Lock;	 
 	 loop 
 	    Parent := (Child-1)/2;
 	    exit when (Child = 0) or (Cmd_Data >= Queue(Parent));
@@ -145,13 +146,14 @@ package body Priority_Queue is
       Hole, Child : Integer; --QueuePtr;
       Last : Obj;
    begin
-      Queue_Mux.Lock;
 
       Qsize := Qsize -1 ;
       Last  := Queue(QSize);
       
       Hole  := 0;
       Child := 1;
+      Queue_Mux.Lock;
+
       while (Child < QSize) loop 
 
 	 if (Child /= QSize-1) and (not (Queue(Child+1) >= Queue(Child))) then 
