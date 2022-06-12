@@ -156,17 +156,17 @@ package body Priority_Queue is
 
       while (Child < QSize) loop 
 
-	 if (Child /= QSize-1) and (not (Queue(Child+1) >= Queue(Child))) then 
-	    Child := Child + 1;  --  Right leaf
-	 end if;
-	 
-	 if (Last >= Queue(Child)) then
-	    Queue(Hole) := Queue(Child);
-	    Hole := Child;
-	    Child := Hole*2+1; -- left leaf   
-	 else
-	    Child := QSize;
-	 end if;
+         if (Child /= QSize-1) and (not (Queue(Child+1) >= Queue(Child))) then 
+            Child := Child + 1;  --  Right leaf
+         end if;
+      
+         if (Last >= Queue(Child)) then
+            Queue(Hole) := Queue(Child);
+            Hole := Child;
+            Child := Hole*2+1; -- left leaf   
+         else
+            Child := QSize;
+         end if;
       end loop;
       
       Queue(Hole) := Last;
@@ -177,9 +177,9 @@ package body Priority_Queue is
    function Top return Obj is
    begin
       if IsEmpty then
-	 return Nul;
+	      return Nul;
       else
-	 return Queue(0);
+	      return Queue(0);
       end if;
    end Top;
    
@@ -187,10 +187,10 @@ package body Priority_Queue is
       Temp : Obj ;
    begin
       if IsEmpty then
-	 Temp := Nul; 
+	      Temp := Nul; 
       else 
-	 Temp := Queue(0);
-	 Delete_Heap;
+	      Temp := Queue(0);
+	      Delete_Heap;
       end if;
       return Temp;
    end Get;
