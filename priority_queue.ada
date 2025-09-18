@@ -35,13 +35,21 @@
 --------------------------------------------------
 with Interfaces; use Interfaces;
 
+-- 优先队列类属，需要用户重载的部分
 generic
+   -- 用户对象
    type Obj is private ;
+   
+   -- 重载 “>=” 比较运算符
    with function ">="(X,Y : in Obj) return Boolean;
+
+   -- 定义一个0元
    with function Nul return Obj; -- for 0 
    
+-- 包定义
 package Priority_Queue is
    
+   -- 定义最大容量，可以修改
    MAXCMDNUM    : constant := 512;
    
    -- 初始化空队列
@@ -56,7 +64,7 @@ package Priority_Queue is
    -- 取出队列头
    function  Get     return Obj;
    
-   -- 深度
+   -- 获得队列深度
    function  Depth   return Integer;
    
    -- 判队列空
@@ -73,17 +81,21 @@ package body Priority_Queue is
    --
    --  二叉树实现
    --
+   
+   -- 使用数组保存队列
    type QueueType is array(0..MAXCMDNUM-1) of Obj;
    
    Queue: QueueType;
+
+   -- 队列指针
    QSize: Integer; --Queueptr;
    
    -- 指令队列修改操作通过该保护对象加锁
    protected Queue_Mux is        
-      entry Lock ;      
-      procedure Release ;      
-   private 
-      Queue_Idle : Boolean := True ;
+        entry Lock ;      
+        procedure Release ;      
+    private 
+        Queue_Idle : Boolean := True ;
    end Queue_Mux ;
    
    protected body Queue_Mux is  
@@ -97,9 +109,9 @@ package body Priority_Queue is
       begin
 	 Queue_Idle := True;
       end Release;
-      
-   end Queue_Mux ;
+   end Queue_Mux;  
 
+   -- 队列函数
    
    function IsEmpty return Boolean is
    begin
